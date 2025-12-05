@@ -1,0 +1,39 @@
+name: Deploy Aplikasi Laravel
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Deploy ke server nih
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          script: |
+            # Masuk ke direktori project
+            cd ${{ secrets.SSH_PATH || '/var/www/gilisnorkel' }}
+            
+            # Pull kode terbaru dari repo
+            echo "📥 Pull kode terbaru dulu..."
+            git pull origin ${{ github.ref_name }}
+            
+            # Update database
+            echo "🔄 Update database nih..."
+            php artisan migrate --force
+            
+            # Bersih-bersih cache
+            echo "🧹 Bersih-bersih cache..."
+            php artisan cache:clear
+            php artisan route:clear
+            php artisan optimize:clear
+            
+            echo "✅ Deploy selesai! Mantap!"
