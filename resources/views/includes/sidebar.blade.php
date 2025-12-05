@@ -1,8 +1,10 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
         <a href="{{ route('admin.home') }}" class="app-brand-link">
-            <img src="{{ asset('assets/img/favicon/favicon.png') }}" alt="logo">
-            <span class="app-brand-text menu-text fw-bold ms-4">
+            <span class="app-brand-logo">
+                <img src="{{ asset('assets/img/favicon/favicon.png') }}" alt="logo" class="sidebar-logo">
+            </span>
+            <span class="app-brand-text menu-text fw-bold ms-2">
                 <span class="text-logo-orange">Gili </span><br>
                 <span class="text-logo-green">Snorkeling</span>
             </span>

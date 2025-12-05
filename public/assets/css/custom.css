@@ -5,6 +5,29 @@
 .text-logo-orange {
     color : #f69047 !important;
 }
+
+/* Sidebar Logo Responsive */
+.sidebar-logo {
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+    transition: all 0.3s ease;
+}
+
+.app-brand-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* Saat sidebar collapsed */
+.layout-menu-collapsed .sidebar-logo,
+.layout-menu-hover .layout-menu:not(:hover) .sidebar-logo {
+    width: 32px;
+    height: 32px;
+}
+
 .light-style .menu .app-brand.demo {
   height: 64px;
 }
