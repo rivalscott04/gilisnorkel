@@ -59,9 +59,16 @@ class BookingController extends Controller
         $booking->load(['paket', 'paketHarga', 'bankAccount']);
         $konfig = $this->konfig;
         $paymentUrl = PaymentServices::createPaymentUrl($booking);
-        Mail::to($booking->email)
-            ->cc($this->konfig->email_notifikasi)
-            ->send(new InvoiceMail($booking,$paymentUrl["response_encode"]->payment->url));
+        
+        // Check if payment URL exists before sending email
+        $paymentUrlString = isset($paymentUrl["response_encode"]) 
+            ? ($paymentUrl["response_encode"]->payment?->url ?? null)
+            : null;
+        if ($paymentUrlString) {
+            Mail::to($booking->email)
+                ->cc($this->konfig->email_notifikasi)
+                ->send(new InvoiceMail($booking, $paymentUrlString));
+        }
 
         return view('frontend.booking-success',compact('booking','konfig','paymentUrl'));
     }

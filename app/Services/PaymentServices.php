@@ -22,7 +22,7 @@ class PaymentServices
         $paymentUrl = Http::withHeaders($prepareForRequest["header"])
             ->post($url,$prepareForRequest["body"]);
 
-        return ["response" => $paymentUrl, "response_encode" => json_decode($paymentUrl)];
+        return ["response" => $paymentUrl, "response_encode" => json_decode($paymentUrl->body())];
     }
 
     public static function getPaymentStatus(Booking $booking) : array
@@ -35,7 +35,7 @@ class PaymentServices
         $paymentStatus = Http::withHeaders($prepareForRequest["header"])
             ->get($url);
 
-        return ["response" => $paymentStatus, "response_encode" => json_decode($paymentStatus)];
+        return ["response" => $paymentStatus, "response_encode" => json_decode($paymentStatus->body())];
     }
 
     public static function  getNotification(Request $request) {
