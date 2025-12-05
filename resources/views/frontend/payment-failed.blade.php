@@ -1,58 +1,133 @@
-@extends('layouts.frontend')
+@extends('layouts.frontend_gsbaru')
 
 @section('content')
-    <section class="page-header page-header-modern page-header-background page-header-background-md overlay overlay-color-dark overlay-show overlay-op-7"
-             style="background-image: url({{ asset('assets/frontend/img/page-header/page-header-background-transparent.jpg') }});">
-        <div class="container">
-            <div class="row mt-5">
-                <div class="col-md-12 align-self-center p-static order-2 text-center">
-                    <h1>Payment<strong> Failed</strong></h1>
-                </div>
-                <div class="col-md-12 align-self-center order-1">
-                    <ul class="breadcrumb breadcrumb-light d-block text-center">
-                        <li><a href="#">Home</a></li>
-                        <li class="active">Payment</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <div class="alert alert-info alert-admin">
-                    <div class="row">
-                        <div class="col-lg-8">
-
-                            <p><strong class="text-danger"><i class="fas fa-exclamation-triangle"></i> Opps! Something gone wrong !</strong>
-                            </p>
-                            <table class="table table-condensed">
-                                <tr>
-                                    <td>Booking Number : <br> <strong>{{$booking->nomor}}</strong></td>
-                                    <td style="width: 25%">Date Created : <br> <strong>{{ $booking->created_at->format('d F Y') }}</strong></td>
-                                </tr>
-                                <tr>
-                                    <td>Payment Type : <br> <strong>{{str_replace("_"," ",$response->service->id??"")}}</strong></td>
-                                    <td style="width: 25%">
-                                        Account Details : <br>
-                                        <strong>{{ str_replace("_"," ",$response->channel->id??""). ' - '.str_replace("_"," ",$response->acquirer->id??"") }}</strong>
-                                        Status : <br>
-                                        <strong>{{ $response["transaction"]["id"]??'FAIL' }}</strong>
-                                    </td>
-                                </tr>
-                            </table>
-                            <strong>we cannot proceed your payment, please check your payment process !</strong>
+    <!-- Hero / Step wizard -->
+    <div class="hero_in cart_section">
+        <div class="wrapper">
+            <div class="container">
+                <div class="bs-wizard clearfix">
+                    <div class="bs-wizard-step complete">
+                        <div class="text-center bs-wizard-stepnum">Your cart</div>
+                        <div class="progress">
+                            <div class="progress-bar"></div>
                         </div>
-                        <div class="col-lg-4 visible-md visible-lg">
-                            <img class="appear-animation float-right" src="{{ asset('assets/frontend/img/admin-banner.png') }}" data-appear-animation="fadeIn">
+                        <a href="#0" class="bs-wizard-dot"></a>
+                    </div>
+
+                    <div class="bs-wizard-step complete">
+                        <div class="text-center bs-wizard-stepnum">Payment</div>
+                        <div class="progress">
+                            <div class="progress-bar"></div>
                         </div>
+                        <a href="#0" class="bs-wizard-dot"></a>
+                    </div>
+
+                    <div class="bs-wizard-step active">
+                        <div class="text-center bs-wizard-stepnum">Finish!</div>
+                        <div class="progress">
+                            <div class="progress-bar"></div>
+                        </div>
+                        <a href="#0" class="bs-wizard-dot"></a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <br><br>
+    <div class="bg_color_1">
+        <div class="container margin_60_35">
+            <div class="row">
+                <!-- Left: booking item -->
+                <div class="col-lg-8">
+                    <div class="box_cart">
+                        <div class="message" style="background: #f8d7da; border-color: #f5c6cb;">
+                            <p>
+                                <strong style="color: #721c24;"><i class="icon-cancel"></i> Payment Failed!</strong><br>
+                                Oops! Something went wrong. We cannot process your payment.
+                            </p>
+                        </div>
 
+                        <table class="table cart-list">
+                            <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Departure Date</th>
+                                <th>Participants</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <div class="thumb_cart">
+                                        <img src="{{ asset('gsbaru/img/thumb_cart_1.jpg') }}" alt="Package">
+                                    </div>
+                                    <span class="item_cart">{{ $booking->paket->nama }}</span>
+                                </td>
+                                <td>
+                                    {{ $booking->tgl_kedatangan->format('d M Y') }}
+                                </td>
+                                <td>
+                                    <strong>{{ $booking->paketHarga->keterangan }}</strong>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <hr>
+
+                        <h5>Payment Details</h5>
+                        <table class="table">
+                            <tr>
+                                <td>Payment Type</td>
+                                <td><strong>{{ str_replace("_"," ", $response->service->id ?? "-") }}</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Account Details</td>
+                                <td><strong>{{ str_replace("_"," ", $response->channel->id ?? "-") }} - {{ str_replace("_"," ", $response->acquirer->id ?? "-") }}</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Status</td>
+                                <td><strong class="text-danger">{{ $response["transaction"]["id"] ?? 'FAIL' }}</strong></td>
+                            </tr>
+                        </table>
+
+                        <p><b>Please check your payment process and try again.</b></p>
+                    </div>
+                </div>
+
+                <!-- Right: summary -->
+                <aside class="col-lg-4" id="sidebar">
+                    <div class="box_detail cart">
+                        <h3>Order summary</h3>
+                        <ul>
+                            <li>
+                                Booking Number
+                                <span>{{ $booking->nomor }}</span>
+                            </li>
+                            <li>
+                                Created at
+                                <span>{{ $booking->created_at->format('d M Y') }}</span>
+                            </li>
+                            <li>
+                                Status
+                                <span class="badge" style="background: #dc3545; color: #fff; padding: 5px 10px; border-radius: 4px;">FAILED</span>
+                            </li>
+                        </ul>
+                        <hr>
+                        <ul class="total">
+                            <li>
+                                Total
+                                <span>Rp {{ number_format($booking->paketHarga->harga) }}</span>
+                            </li>
+                        </ul>
+
+                        <a href="{{ route('frontend.booking.success', $booking->nomor) }}" class="btn_1 full-width purchase">
+                            Try Again
+                        </a>
+                        <small>Please try the payment again, or contact us for help.</small>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </div>
 @endsection

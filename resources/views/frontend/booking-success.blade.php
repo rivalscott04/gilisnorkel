@@ -6,7 +6,7 @@
         <div class="wrapper">
             <div class="container">
                 <div class="bs-wizard clearfix">
-                    <div class="bs-wizard-step active">
+                    <div class="bs-wizard-step complete">
                         <div class="text-center bs-wizard-stepnum">Your cart</div>
                         <div class="progress">
                             <div class="progress-bar"></div>
@@ -14,7 +14,7 @@
                         <a href="#0" class="bs-wizard-dot"></a>
                     </div>
 
-                    <div class="bs-wizard-step disabled">
+                    <div class="bs-wizard-step active">
                         <div class="text-center bs-wizard-stepnum">Payment</div>
                         <div class="progress">
                             <div class="progress-bar"></div>

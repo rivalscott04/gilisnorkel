@@ -1,79 +1,137 @@
-@extends('layouts.frontend')
+@extends('layouts.frontend_gsbaru')
 
 @section('content')
-    <section class="page-header page-header-modern page-header-background page-header-background-md overlay overlay-color-dark overlay-show overlay-op-7"
-             style="background-image: url({{ asset('assets/frontend/img/page-header/page-header-background-transparent.jpg') }});">
-        <div class="container">
-            <div class="row mt-5">
-                <div class="col-md-12 align-self-center p-static order-2 text-center">
-                    <h1>Payment<strong> Success</strong></h1>
-                </div>
-                <div class="col-md-12 align-self-center order-1">
-                    <ul class="breadcrumb breadcrumb-light d-block text-center">
-                        <li><a href="#">Home</a></li>
-                        <li class="active">Payment</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <div class="alert alert-info alert-admin">
-                    <div class="row">
-                        <div class="col-lg-12">
-
-                            <p><strong class="text-success"><i class="fas fa-exclamation-triangle"></i> Thank you! your payment already accepted !</strong>
-                            </p>
-                            <table class="table table-condensed">
-                                <tr>
-                                    <td>Booking Number : <br> <strong>{{$booking->nomor}}</strong></td>
-                                    <td style="width: 25%">Date Created : <br> <strong>{{ $booking->created_at->format('d F Y') }}</strong></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Bank : <br> <strong>{{str_replace("_"," ",$response["acquirer"]->id??"")}}</strong><br>
-                                        Channel : <br><strong>{{ str_replace("_"," ",$response["channel"]->id??"") }}</strong>
-                                    </td>
-                                    <td style="width: 25%">
-                                        Payment Type : <br>
-                                        <strong>{{ str_replace("_"," ",$response["service"]->id??"") }}</strong>
-                                        Payment Date : <br>
-                                        <strong>{{ \Illuminate\Support\Carbon::make($response["transaction"]->date)->format("Y-m-d H:i:s") }}</strong>
-                                    </td>
-                                </tr>
-                            </table>
-                            <table class="table table-condensed">
-                                 <tr>
-                                    <th>Packages</th>
-                                    <th style="width: 25%">Participants</th>
-                                    <th style="width: 25%">Price</th>
-                                </tr>
-                                <tr>
-                                    <td>{{ $booking->paket->nama }} <br> <br> <span class="badge badge-danger badge-md badge-pill px-2 py-1 mr-1">Booking Date : {{ $booking->tgl_kedatangan->format('d F Y') }}</span></td>
-                                    <td>{{ $booking->paketHarga->keterangan }}</td>
-                                    <td>IDR {{ number_format($booking->paketHarga->harga) }}</td>
-                                </tr>
-                                <tr>
-                                    <th colspan="2">GRAND TOTAL</th>
-                                    <th>IDR {{ number_format($booking->paketHarga->harga) }}</th>
-                                </tr>
-                            </table>
-
-                            <p><b>A copy of this receipt has been sent to your email. please check your email for details.</b></p>
-                            <p>Thank you, for trusting us!</p>
+    <!-- Hero / Step wizard -->
+    <div class="hero_in cart_section">
+        <div class="wrapper">
+            <div class="container">
+                <div class="bs-wizard clearfix">
+                    <div class="bs-wizard-step complete">
+                        <div class="text-center bs-wizard-stepnum">Your cart</div>
+                        <div class="progress">
+                            <div class="progress-bar"></div>
                         </div>
-                        <!--div class="col-lg-4 visible-md visible-lg">
-                            <img class="appear-animation float-right" src="{{ asset('assets/frontend/img/admin-banner.png') }}" data-appear-animation="fadeIn">
-                        </div-->
+                        <a href="#0" class="bs-wizard-dot"></a>
+                    </div>
+
+                    <div class="bs-wizard-step complete">
+                        <div class="text-center bs-wizard-stepnum">Payment</div>
+                        <div class="progress">
+                            <div class="progress-bar"></div>
+                        </div>
+                        <a href="#0" class="bs-wizard-dot"></a>
+                    </div>
+
+                    <div class="bs-wizard-step active">
+                        <div class="text-center bs-wizard-stepnum">Finish!</div>
+                        <div class="progress">
+                            <div class="progress-bar"></div>
+                        </div>
+                        <a href="#0" class="bs-wizard-dot"></a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <br><br>
+    <div class="bg_color_1">
+        <div class="container margin_60_35">
+            <div class="row">
+                <!-- Left: booking item -->
+                <div class="col-lg-8">
+                    <div class="box_cart">
+                        <div class="message" style="background: #d4edda; border-color: #c3e6cb;">
+                            <p>
+                                <strong style="color: #155724;"><i class="icon-check"></i> Payment Successful!</strong><br>
+                                Thank you! Your payment has been accepted.
+                            </p>
+                        </div>
 
+                        <table class="table cart-list">
+                            <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Departure Date</th>
+                                <th>Participants</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <div class="thumb_cart">
+                                        <img src="{{ asset('gsbaru/img/thumb_cart_1.jpg') }}" alt="Package">
+                                    </div>
+                                    <span class="item_cart">{{ $booking->paket->nama }}</span>
+                                </td>
+                                <td>
+                                    {{ $booking->tgl_kedatangan->format('d M Y') }}
+                                </td>
+                                <td>
+                                    <strong>{{ $booking->paketHarga->keterangan }}</strong>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <hr>
+
+                        <h5>Payment Details</h5>
+                        <table class="table">
+                            <tr>
+                                <td>Bank</td>
+                                <td><strong>{{ str_replace("_"," ", $response["acquirer"]->id ?? "-") }}</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Channel</td>
+                                <td><strong>{{ str_replace("_"," ", $response["channel"]->id ?? "-") }}</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Payment Type</td>
+                                <td><strong>{{ str_replace("_"," ", $response["service"]->id ?? "-") }}</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Payment Date</td>
+                                <td><strong>{{ \Illuminate\Support\Carbon::make($response["transaction"]->date)->format("d M Y H:i") }}</strong></td>
+                            </tr>
+                        </table>
+
+                        <p><b>A copy of this receipt has been sent to your email. Please check your email for details.</b></p>
+                    </div>
+                </div>
+
+                <!-- Right: summary -->
+                <aside class="col-lg-4" id="sidebar">
+                    <div class="box_detail cart">
+                        <h3>Order summary</h3>
+                        <ul>
+                            <li>
+                                Booking Number
+                                <span>{{ $booking->nomor }}</span>
+                            </li>
+                            <li>
+                                Created at
+                                <span>{{ $booking->created_at->format('d M Y') }}</span>
+                            </li>
+                            <li>
+                                Status
+                                <span class="badge" style="background: #28a745; color: #fff; padding: 5px 10px; border-radius: 4px;">PAID</span>
+                            </li>
+                        </ul>
+                        <hr>
+                        <ul class="total">
+                            <li>
+                                Total
+                                <span>Rp {{ number_format($booking->paketHarga->harga) }}</span>
+                            </li>
+                        </ul>
+
+                        <a href="{{ route('frontend.home') }}" class="btn_1 full-width purchase">
+                            Back to Home
+                        </a>
+                        <small>Thank you for trusting us!</small>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </div>
 @endsection
