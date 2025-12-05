@@ -101,7 +101,7 @@
                             </li>
                         </ul>
 
-                        <a href="javascript:void(0);" onclick="showPaymentModal('{!! $paymentUrl['response_encode']?->payment?->url !!}')"
+                        <a href="javascript:void(0);" onclick="showPaymentModal('{!! data_get($paymentUrl, 'response_encode.payment.url', '#') !!}')"
                            class="btn_1 full-width purchase">
                             Proceed to payment
                         </a>
