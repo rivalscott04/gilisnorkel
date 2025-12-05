@@ -3,6 +3,7 @@
     <link rel="stylesheet" href="{{ asset('assets/libs/sweetalert2/sweetalert2.css') }}">
 @endpush
 @push('js')
+<script src="{{ asset('assets/libs/sweetalert2/sweetalert2.js') }}"></script>
 <script>
     function fn_deleteData(url)
     {
