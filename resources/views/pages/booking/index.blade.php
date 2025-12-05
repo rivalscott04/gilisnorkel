@@ -58,17 +58,17 @@
             responsive:true,
             ajax: '{!! route('admin.booking.data') !!}',
             columns: [
-                { data: 'id', name: 'id',render: function (data, type, row, meta) {
+                { data: 'id', name: 'id', orderable: false, searchable: false, render: function (data, type, row, meta) {
                         return meta.row + meta.settings._iDisplayStart + 1;
                     }
                 },
-                { data: 'tgl_kedatangan', name: 'tgl_kedatangan' },
-                { data: 'nama', name: 'nama' },
-                { data: 'nomor_telp', name: 'nomor_telp' },
+                { data: 'tgl_kedatangan', name: 'bookings.tgl_kedatangan' },
+                { data: 'nama', name: 'bookings.nama' },
+                { data: 'nomor_telp', name: 'bookings.nomor_telp' },
                 { data: 'paket.nama', name: 'paket.nama' },
-                { data: 'harga', name: 'harga' },
-                { data: 'status', name: 'status' },
-                { data: 'action', name: 'action' }
+                { data: 'harga', name: 'bookings.harga' },
+                { data: 'status', name: 'bookings.status' },
+                { data: 'action', name: 'action', orderable: false, searchable: false }
             ],
             render: function (data, type, row, meta) {
                 return meta.row + meta.settings._iDisplayStart + 1;
