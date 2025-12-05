@@ -25,9 +25,9 @@ class BookingController extends Controller
                 'bookings.status',
                 'bookings.paket_id',
                 'bookings.created_at',
-                'pakets.nama as paket_nama'
+                'paket.nama as paket_nama'
             ])
-            ->leftJoin('pakets', 'bookings.paket_id', '=', 'pakets.id')
+            ->leftJoin('paket', 'bookings.paket_id', '=', 'paket.id')
             ->where('bookings.status', Booking::UNPAID);
 
         return $dataTables->eloquent($data)
@@ -46,7 +46,7 @@ class BookingController extends Controller
             ->orderColumn('nomor_telp', fn($query, $order) => $query->orderBy('bookings.nomor_telp', $order))
             ->orderColumn('harga', fn($query, $order) => $query->orderBy('bookings.harga', $order))
             ->orderColumn('status', fn($query, $order) => $query->orderBy('bookings.status', $order))
-            ->orderColumn('paket.nama', fn($query, $order) => $query->orderBy('pakets.nama', $order))
+            ->orderColumn('paket.nama', fn($query, $order) => $query->orderBy('paket.nama', $order))
             ->rawColumns(['action', 'status'])
             ->toJson();
     }
