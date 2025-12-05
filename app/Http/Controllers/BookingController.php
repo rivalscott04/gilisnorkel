@@ -17,8 +17,8 @@ class BookingController extends Controller
     {
         $data = Booking::query()
             ->with('paket')
-            ->where('status',Booking::UNPAID)
-            ->latest();
+            ->where('bookings.status',Booking::UNPAID)
+            ->latest('bookings.created_at');
 
         return $dataTables->eloquent($data)
             ->editColumn('tgl_kedatangan',fn($data) => $data->tgl_kedatangan->format('d-m-Y'))
