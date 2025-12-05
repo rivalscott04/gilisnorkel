@@ -1,0 +1,76 @@
+{
+  "menu": [
+      {
+          "menuHeader": "Master Data"
+      },
+
+      {
+          "url": "admin/images",
+          "name": "Images",
+          "icon": "menu-icon tf-icons bx bxs-image",
+          "slug": "images"
+      },
+      {
+          "url": "admin/paket",
+          "name": "Paket",
+          "icon": "menu-icon tf-icons bx bxs-package",
+          "slug": "paket"
+      },
+      {
+          "url": "admin/jam",
+          "name": "Jam Mulai",
+          "icon": "menu-icon tf-icons bx bxs-time",
+          "slug": "jam"
+      },
+      {
+          "url": "admin/konfigurasi",
+          "name": "Konfigurasi",
+          "icon": "menu-icon tf-icons bx bxs-cog",
+          "slug": "konfigurasi"
+      },
+      {
+          "url": "admin/bank",
+          "name": "Bank Account",
+          "icon": "menu-icon tf-icons bx bxs-bank",
+          "slug": "bank"
+      },
+      {
+          "url": "admin/guide",
+          "name": "Guides",
+          "icon": "menu-icon tf-icons bx bxs-user",
+          "slug": "guide"
+      },
+      {
+          "menuHeader": "Transaksi"
+      },
+      {
+          "url": "admin/booking",
+          "name": "Booking",
+          "icon": "menu-icon tf-icons bx bxs-calendar-check",
+          "slug": "booking"
+      },
+      {
+          "url": "admin/payment",
+          "name": "Payment",
+          "icon": "menu-icon tf-icons bx bxs-bookmarks",
+          "slug": "payment"
+      },
+      {
+          "menuHeader": "Frontend"
+      },
+      {
+          "url": "admin/gallery",
+          "name": "Gallery",
+          "icon": "menu-icon tf-icons bx bx-images",
+          "slug": "gallery"
+      },
+      {
+          "url": "admin/faq",
+          "name": "FAQ",
+          "icon": "menu-icon tf-icons bx bxs-info-circle",
+          "slug": "faq"
+      }
+
+
+  ]
+}
