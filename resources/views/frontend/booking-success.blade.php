@@ -101,11 +101,26 @@
                             </li>
                         </ul>
 
+                        {{-- TODO: Uncomment when DOKU integration is ready --}}
+                        {{-- 
+                        @if(data_get($paymentUrl, 'response_encode.payment.url'))
                         <a href="javascript:void(0);" onclick="showPaymentModal('{!! data_get($paymentUrl, 'response_encode.payment.url', '#') !!}')"
                            class="btn_1 full-width purchase">
                             Proceed to payment
                         </a>
                         <small>Please complete your payment by clicking the button above.</small>
+                        @endif
+                        --}}
+
+                        <div class="alert alert-success text-center" style="background: #d4edda; border: 1px solid #c3e6cb; padding: 15px; border-radius: 5px; margin-bottom: 15px;">
+                            <strong>Booking Received!</strong><br>
+                            Our team will contact you shortly for payment confirmation.
+                        </div>
+
+                        <a href="{{ route('frontend.home') }}" class="btn_1 full-width purchase">
+                            Back to Home
+                        </a>
+                        <small>Thank you for booking with us!</small>
 
                         <div class="mt-3">
                             <img src="{{ asset('assets/frontend/img/logos/1.jpg') }}" width="50" height="20" alt="">
@@ -127,9 +142,18 @@
 @push('frontend-js')
     <script>
         function showPaymentModal(url) {
+            console.log('Payment URL:', url); // Debug log
+            
+            // Check if URL is valid
+            if (!url || url === '#' || url === '' || url === 'null' || url === 'undefined') {
+                alert('Payment URL is not available. Please try refreshing the page or contact support.\n\nDebug: URL = ' + url);
+                return;
+            }
+            
             if (typeof loadJokulCheckout === 'function') {
                 loadJokulCheckout(url);
             } else {
+                // Fallback: redirect to URL directly
                 window.location.href = url;
             }
         }
