@@ -16,21 +16,38 @@ class BookingController extends Controller
     public function data(DataTables $dataTables)
     {
         $data = Booking::query()
-            ->with('paket')
-            ->where('bookings.status',Booking::UNPAID)
-            ->latest('bookings.created_at');
+            ->select([
+                'bookings.id',
+                'bookings.tgl_kedatangan',
+                'bookings.nama',
+                'bookings.nomor_telp',
+                'bookings.harga',
+                'bookings.status',
+                'bookings.paket_id',
+                'bookings.created_at',
+                'pakets.nama as paket_nama'
+            ])
+            ->leftJoin('pakets', 'bookings.paket_id', '=', 'pakets.id')
+            ->where('bookings.status', Booking::UNPAID);
 
         return $dataTables->eloquent($data)
-            ->editColumn('tgl_kedatangan',fn($data) => $data->tgl_kedatangan->format('d-m-Y'))
-            ->editColumn('status',fn($data) => config('constants.status_booking.'.$data->status))
-            ->editColumn('harga',fn($data) => number_format($data->harga))
-            ->addColumn('action',function ($data){
-                $edit = "<a href='".route('admin.booking.edit',$data->id)."' class='text-success' title='Edit Data'><i class='bx bxs-edit bx-sm'></i></a>";
-                $delete = "<a href='javascript:;' class='text-danger' onclick='fn_deleteData(".'"'.route('admin.booking.destroy',$data->id).'"'.")' title='Hapus Data'><i class='bx bxs-trash bx-sm'></i></a>";
+            ->editColumn('tgl_kedatangan', fn($row) => $row->tgl_kedatangan->format('d-m-Y'))
+            ->editColumn('status', fn($row) => config('constants.status_booking.'.$row->status))
+            ->editColumn('harga', fn($row) => number_format($row->harga))
+            ->addColumn('paket.nama', fn($row) => $row->paket_nama)
+            ->addColumn('action', function ($row) {
+                $edit = "<a href='".route('admin.booking.edit', $row->id)."' class='text-success' title='Edit Data'><i class='bx bxs-edit bx-sm'></i></a>";
+                $delete = "<a href='javascript:;' class='text-danger' onclick='fn_deleteData(".'\"'.route('admin.booking.destroy', $row->id).'\"'.")' title='Hapus Data'><i class='bx bxs-trash bx-sm'></i></a>";
 
-                return $data->status === Booking::UNPAID ? $edit.'  '.$delete : 'Disabled' ;
+                return $row->status === Booking::UNPAID ? $edit.'  '.$delete : 'Disabled';
             })
-            ->rawColumns(['action','status'])
+            ->orderColumn('tgl_kedatangan', fn($query, $order) => $query->orderBy('bookings.tgl_kedatangan', $order))
+            ->orderColumn('nama', fn($query, $order) => $query->orderBy('bookings.nama', $order))
+            ->orderColumn('nomor_telp', fn($query, $order) => $query->orderBy('bookings.nomor_telp', $order))
+            ->orderColumn('harga', fn($query, $order) => $query->orderBy('bookings.harga', $order))
+            ->orderColumn('status', fn($query, $order) => $query->orderBy('bookings.status', $order))
+            ->orderColumn('paket.nama', fn($query, $order) => $query->orderBy('pakets.nama', $order))
+            ->rawColumns(['action', 'status'])
             ->toJson();
     }
 
@@ -79,10 +96,10 @@ class BookingController extends Controller
             return back()->withInput()->withErrors($e->getMessage());
         }
     }
+
     public function destroy(Booking $booking)
     {
         try {
-
             $booking->delete();
             return response()->json(["success" => 'Delete data berhasil.']);
         }catch (\Exception $e) {
