@@ -32,19 +32,16 @@
                     },
                     success: function (respon){
                         console.log(respon);
+                        if(datatable !== undefined){
+                            datatable.draw(true);
+                        }else{
+                            window.location.reload();
+                        }
                     },
                     error: function(xhr) {
                         console.log(xhr);
                     }
                 });
-                if(datatable !== undefined){
-                    datatable.draw(true)
-                }else{
-                    setTimeout(function(){
-                        window.location.reload();
-                    }, 1000);
-
-                }
 
             }
 
