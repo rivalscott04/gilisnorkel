@@ -33,14 +33,42 @@
                     },
                     success: function (respon){
                         console.log(respon);
-                        if(datatable !== undefined){
-                            datatable.draw(true);
-                        }else{
-                            window.location.reload();
+                        if(respon.success){
+                            Swal.fire({
+                                title: 'Berhasil!',
+                                text: respon.success,
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            }).then(function(){
+                                if(typeof datatable !== 'undefined'){
+                                    datatable.draw(false);
+                                }else{
+                                    window.location.reload();
+                                }
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: respon.error || 'Terjadi kesalahan',
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
                         }
                     },
                     error: function(xhr) {
                         console.log(xhr);
+                        let errorMessage = 'Terjadi kesalahan saat menghapus data';
+                        if(xhr.responseJSON && xhr.responseJSON.error){
+                            errorMessage = xhr.responseJSON.error;
+                        } else if(xhr.responseJSON && xhr.responseJSON.message){
+                            errorMessage = xhr.responseJSON.message;
+                        }
+                        Swal.fire({
+                            title: 'Error!',
+                            text: errorMessage,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
                     }
                 });
 

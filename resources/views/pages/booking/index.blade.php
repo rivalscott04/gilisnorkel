@@ -49,7 +49,7 @@
 @push('js')
     <script src="{{ asset('assets/libs/datatables-bs5/datatables-bootstrap5.js') }}"></script>
     <script>
-        let datatable = $(".datatable").DataTable({
+        var datatable = $(".datatable").DataTable({
             language:{
                 "info": "Data _START_ sampai _END_ dari _TOTAL_ data.",
             },
