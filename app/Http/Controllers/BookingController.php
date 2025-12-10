@@ -37,7 +37,8 @@ class BookingController extends Controller
             ->addColumn('paket.nama', fn($row) => $row->paket_nama)
             ->addColumn('action', function ($row) {
                 $edit = "<a href='".route('admin.booking.edit', $row->id)."' class='text-success' title='Edit Data'><i class='bx bxs-edit bx-sm'></i></a>";
-                $delete = "<a href='javascript:;' class='text-danger' onclick='fn_deleteData(".'\"'.route('admin.booking.destroy', $row->id).'\"'.")' title='Hapus Data'><i class='bx bxs-trash bx-sm'></i></a>";
+                $deleteUrl = json_encode(route('admin.booking.destroy', $row->id));
+                $delete = "<a href='javascript:;' class='text-danger' onclick='fn_deleteData(".$deleteUrl.")' title='Hapus Data'><i class='bx bxs-trash bx-sm'></i></a>";
 
                 return $row->status === Booking::UNPAID ? $edit.'  '.$delete : 'Disabled';
             })

@@ -22,7 +22,7 @@
             buttonsStyling: false
         }).then(function(res) {
             if(res.value){
-                token = '{{csrf_token()}}';
+                var token = '{{csrf_token()}}';
                 $.ajax({
                     url: url,
                     type: 'DELETE',
@@ -57,7 +57,7 @@
                     },
                     error: function(xhr) {
                         console.log(xhr);
-                        let errorMessage = 'Terjadi kesalahan saat menghapus data';
+                        var errorMessage = 'Terjadi kesalahan saat menghapus data';
                         if(xhr.responseJSON && xhr.responseJSON.error){
                             errorMessage = xhr.responseJSON.error;
                         } else if(xhr.responseJSON && xhr.responseJSON.message){
