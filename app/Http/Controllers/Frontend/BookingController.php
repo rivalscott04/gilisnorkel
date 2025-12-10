@@ -59,21 +59,17 @@ class BookingController extends Controller
         $booking->load(['paket', 'paketHarga', 'bankAccount']);
         $konfig = $this->konfig;
         
-        // TODO: Uncomment when DOKU integration is ready
-        // $paymentUrl = PaymentServices::createPaymentUrl($booking);
-        // 
-        // // Check if payment URL exists before sending email
-        // $paymentUrlString = isset($paymentUrl["response_encode"]) 
-        //     ? ($paymentUrl["response_encode"]->payment?->url ?? null)
-        //     : null;
-        // if ($paymentUrlString) {
-        //     Mail::to($booking->email)
-        //         ->cc($this->konfig->email_notifikasi)
-        //         ->send(new InvoiceMail($booking, $paymentUrlString));
-        // }
+        $paymentUrl = PaymentServices::createPaymentUrl($booking);
         
-        // Temporary: set empty payment URL
-        $paymentUrl = null;
+        // Check if payment URL exists before sending email
+        $paymentUrlString = isset($paymentUrl["response_encode"]) 
+            ? ($paymentUrl["response_encode"]->payment?->url ?? null)
+            : null;
+        if ($paymentUrlString) {
+            Mail::to($booking->email)
+                ->cc($this->konfig->email_notifikasi)
+                ->send(new InvoiceMail($booking, $paymentUrlString));
+        }
 
         return view('frontend.booking-success',compact('booking','konfig','paymentUrl'));
     }
@@ -138,7 +134,7 @@ class BookingController extends Controller
                         "status" => Booking::PAID,
                     ]);
                 });
-                return redirect()->route('booking.payment-status',$booking->nomor);
+                return redirect()->route('frontend.booking.payment-status',$booking->nomor);
             }
             return  response()->json("",404);
         }
